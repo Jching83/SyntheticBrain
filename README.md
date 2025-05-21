@@ -44,3 +44,4 @@ Join our community-driven effort to build the future of adaptive intelligence!
 [![Sponsor](https://img.shields.io/badge/Sponsor%20My%20Research-❤️-red?style=for-the-badge)](https://github.com/sponsors/Jching83)
 
 If you believe in sovereign, ethical AI and cognition research, your support helps keep these projects open, autonomous, and accessible to all.
+
