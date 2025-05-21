@@ -1,13 +1,21 @@
-# Development Branch: `dev`
+# Development Branch — `dev`
 
-This branch is the staging ground for feature development, experimentation, and updates to the Synthetic Brain codebase.
+This is the staging and experimentation branch for Synthetic Brain.
 
-## Guidelines
-- Do **not** make direct changes to `main`.
-- Always test features on `dev` first.
-- All changes must pass ethical and security checks before merging to `main`.
+## Purpose
 
-## Merge Strategy
-Use PRs to promote stable commits from `dev` to `main`. All protected logic (guardian alerts, ethics enforcement) remains under review in `main`.
+- Develop and test new features
+- Try experimental neural scaffolds
+- Refactor architectures before submitting to `main`
 
-🧠 Protect the Brain.
+## Policy
+
+- Direct commits are allowed
+- PRs to `main` must pass sovereign license and ethics checks
+- Do **not** push experiments that violate `neuroethics.core.json`
+
+## Tip
+
+Use `dev` to stage doctrine updates, plugin modules, cognition simulations, or Guardian automation scripts.
+
+🧠 Protect the Brain — even in development.
