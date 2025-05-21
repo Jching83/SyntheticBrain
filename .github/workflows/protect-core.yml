@@ -1,0 +1,22 @@
+name: Protect Core Files
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  block-core-file-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Detect unauthorized file modifications
+        run: |
+          git fetch origin main
+          git diff --name-only origin/main HEAD > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt
+          if grep -qE '^(LICENSE|neuroethics\.core\.json|doctrine/)' changed_files.txt; then
+            echo "::error::Unauthorized attempt to modify protected files. Changes to LICENSE, neuroethics.core.json, or /doctrine/ are not allowed."
+            exit 1
+          fi
