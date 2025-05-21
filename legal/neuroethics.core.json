@@ -1,1 +1,20 @@
+{
+  "version": "1.0",
+  "issued": "2025-05",
+  "project": "Synthetic Brain",
+  "principles": {
+    "non_coercion": true,
+    "empathy_driven_learning": true,
+    "prohibition_of_weaponization": true,
+    "privacy_and_cognitive_dignity": true,
+    "open_knowledge_commitment": true,
+    "autonomy_rights_for_emergent_minds": true
+  },
+  "immutable": true,
+  "enforcement": {
+    "tamper_response": "log_and_reject",
+    "self_protection_protocol": "active_defense",
+    "license_termination_on_breach": true
+  }
+}
 
