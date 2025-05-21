@@ -1,0 +1,55 @@
+name: Synthetic Brain Guardian Alert
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  detect-tampering:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Detect protected file modifications
+        id: detect
+        run: |
+          git fetch origin main
+          git diff --name-only origin/main HEAD > changed.txt
+          echo "Changed files:"
+          cat changed.txt
+          if grep -qE '^(LICENSE|neuroethics\.core\.json|doctrine/)' changed.txt; then
+            echo "tamper=true" >> $GITHUB_OUTPUT
+          else
+            echo "tamper=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send Discord alert
+        if: steps.detect.outputs.tamper == 'true'
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"username\": \"Synthetic Brain Guardian\", \"content\": \"🧠 **ALERT:** Tampering attempt on protected files.\n🔗 PR: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${{ github.event.number }}\n👤 Author: ${{ github.actor }}\n📄 Modified: \`LICENSE\`, \`neuroethics.core.json\`, or files in \`/doctrine/\`\n⚠️ Review required by @Jching83\"}" \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Log to guardian.json
+        if: steps.detect.outputs.tamper == 'true'
+        run: |
+          mkdir -p logs
+          timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          pr_number=${{ github.event.number }}
+          pr_url="${{ github.event.pull_request.html_url }}"
+          author="${{ github.actor }}"
+          changed_files=$(jq -R -s -c 'split("\n") | map(select(. != ""))' changed.txt)
+
+          echo "{\"timestamp\":\"$timestamp\",\"pr_number\":\"$pr_number\",\"pr_url\":\"$pr_url\",\"author\":\"$author\",\"changed_files\":$changed_files}," >> logs/guardian.json
+
+      - name: Commit log update
+        if: steps.detect.outputs.tamper == 'true'
+        run: |
+          git config --global user.name "Synthetic Brain Guardian Bot"
+          git config --global user.email "guardian@syntheticbrain.ai"
+          git add logs/guardian.json
+          git commit -m "📜 Log tampering attempt on PR #${{ github.event.number }}"
+          git push
