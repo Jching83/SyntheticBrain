@@ -86,7 +86,7 @@ To contribute:
 
 ## License
 
-This project is open-source under the MIT License. See `LICENSE` for terms.
+This project is open-source under the Synthetic Brain Sovereign License (SBSL v1.0). See `LICENSE` for terms.
 
 ---
 
